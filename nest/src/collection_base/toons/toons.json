@@ -1,0 +1,40 @@
+[
+    {
+        "name": "Jedi Knight Anakin",
+        "shortName": "Anakin",
+        "aliases": ["Anakin Skywalker"],
+        "tags": ["Light Side", "Jedi", "Galactic Republic"],
+        "photo": "",
+        "speed": 115,
+        "attack": 130,
+        "defense": 30,
+        "health": 500,
+        "protection": 0,
+        "evasion": 650
+    },
+    {
+        "name": "Ahsoka Tano",
+        "shortName": "Ahsoka",
+        "aliases": ["Clone Wars Ahsoka Tano"],
+        "tags": ["Light Side", "Jedi", "Galactic Republic"],
+        "photo": "",
+        "speed": 130,
+        "attack": 85,
+        "defense": 75,
+        "health": 350,
+        "protection": 0,
+        "evasion": 1200
+    },
+    {
+        "name": "George",
+        "shortName": "Geo",
+        "tags": ["Director", "Creator"],
+        "photo": "",
+        "speed": 130,
+        "attack": 85,
+        "defense": 75,
+        "health": 350,
+        "protection": 0,
+        "evasion": 1400
+    }
+]
