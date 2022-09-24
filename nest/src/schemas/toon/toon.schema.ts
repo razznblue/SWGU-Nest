@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { Ability } from '../ability/ability.schema';
 import { ToonMedia } from './sub_objects/toon_media';
 import { ToonStats } from './sub_objects/toon_stats';
 
@@ -25,8 +26,8 @@ export class Toon {
   @Prop()
   media?: ToonMedia;
 
-  // @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ability' }] })
-  // abilities: Ability[],
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ability' }] })
+  abilities: Ability;
 
   @Prop()
   remnantStartCount?: number;
