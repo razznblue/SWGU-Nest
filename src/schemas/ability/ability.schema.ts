@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { Toon } from '../toon/toon.schema';
-import { AbilityLevel } from './sub_objects/ability_levels';
-import { StatusEffect } from './sub_objects/status_effect';
+import { AbilityLevel } from '../../objects/ability_levels';
+import { StatusEffect } from '../../objects/status_effect';
 
 export type AbilityDocument = Ability & Document;
 
@@ -42,4 +42,4 @@ export class Ability {
   createdAt: string;
 }
 
-export const ToonSchema = SchemaFactory.createForClass(Toon);
+export const AbilitySchema = SchemaFactory.createForClass(Ability);

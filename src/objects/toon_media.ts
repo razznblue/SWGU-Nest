@@ -12,7 +12,7 @@ export class ToonMedia {
 
   // The BACK of the Toon Card
   getPrimaryAssetBack(): string {
-    return this.primaryAssetFront;
+    return this.primaryAssetBack;
   }
 
   // The PROFILE image (probably just a picture of the characters face)
