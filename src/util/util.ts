@@ -5,7 +5,12 @@ export const Util = {
     let id = '';
 
     // Add ID Prefix(based on toon name)
-    for (const name of toon.getName().split(' ')) {
+    const toonNameSplitted = toon
+      .getName()
+      .replace('(', '')
+      .replace(')', '')
+      .split(' ');
+    for (const name of toonNameSplitted) {
       const firstLetter = name.split('')[0].toUpperCase();
       id += firstLetter;
     }
@@ -31,15 +36,9 @@ export const Util = {
   },
 };
 
-// const toonData1 = {
-//   name: 'Jedi Knight Anakin',
-//   tags: ['Light Side', 'Jedi', 'Galactic Republic'],
+// const toonData = {
+//   name: 'Skiff Guard (Lando Calrissian)',
+//   tags: ['Light Side', 'Hutt Clan', 'Smuggler'],
 // };
 
-// const toonData2 = {
-//   name: 'Ahsoka Tano',
-//   tags: ['Light Side', 'Jedi', 'Galactic Republic'],
-// };
-
-// Util.generateToonId(new Toon(toonData1));
-// Util.generateToonId(new Toon(toonData2));
+// Util.generateToonId(new Toon(toonData));

@@ -1,0 +1,83 @@
+[
+  {
+    "name": "Deft Bladework",
+    "type": "basic",
+    "level": "1",
+    "maxLevel": "8",
+    "damageType": "PHYSICAL",
+    "description": "Deal physical damage to target enemy with a 35% chance to inflict healing and buff immunity for 1 turn.",
+    "statusEffects": [
+      {
+        "name": "BUFF_IMMUNITY",
+        "type": "DEBUFF",
+        "successPercentage": 35,
+        "length": 1,
+        "targets": ["TARGET_ENEMY"]
+      },
+      {
+        "name": "HEALING_IMMUNITY",
+        "type": "DEBUFF",
+        "successPercentage": 35,
+        "length": 1,
+        "targets": ["TARGET_ENEMY"]
+      }
+    ],
+    "abilityLevels": [
+      {
+        "level": "2",
+        "upgrades": ["ADD_FIVE_PERCENT_DAMAGE"],
+        "cost": {
+          "credits": "1500"
+        }
+      },
+      {
+        "level": "3",
+        "upgrades": ["INCREASE_INFLICT_DEBUFF_PERCENTAGE_CHANCE_15"],
+        "cost": {
+          "credits": "2200"
+        }
+      },
+      {
+        "level": "4",
+        "upgrades": ["ADD_FIVE_PERCENT_DAMAGE"],
+        "cost": {
+          "credits": "4600",
+          "abilityTokenXs": 8
+        }
+      },
+      {
+        "level": "5",
+        "upgrades": ["ADD_FIFTEEN_PERCENT_DAMAGE"],
+        "cost": {
+          "credits": "8000",
+          "abilityTokenXs": 10,
+          "abilityTokenYs": 3
+        }
+      },
+      {
+        "level": "6",
+        "upgrades": ["ADD_FIVE_PERCENT_DAMAGE"],
+        "cost": {
+          "credits": "10000",
+          "abilityTokenXs": 14,
+          "abilityTokenYs": 5
+        }
+      },
+      {
+        "level": "7",
+        "upgrades": ["ADD_FIVE_PERCENT_DAMAGE"],
+        "cost": {
+          "credits": "13500",
+          "abilityTokenZs": 7
+        }
+      }
+    ],
+    "cooldown": 1
+  },
+  {
+    "type": "special",
+    "name": "Overpowering Assault",
+    "description": "",
+    "cooldown": 3
+  }
+]

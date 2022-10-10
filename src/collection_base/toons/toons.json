@@ -4,13 +4,23 @@
         "shortName": "Anakin",
         "aliases": ["Anakin Skywalker"],
         "tags": ["Light Side", "Jedi", "Galactic Republic"],
-        "photo": "",
-        "speed": 115,
-        "attack": 130,
-        "defense": 30,
-        "health": 500,
-        "protection": 0,
-        "evasion": 650
+        "stats": {
+          "speed": 115,
+          "attack": 130,
+          "defense": 30,
+          "health": 500,
+          "protection": 0,
+          "evasion": 650,
+          "criticalChancePercentage": 21,
+          "criticalDamagePercentage": 125
+        },
+        "media": {
+          "primaryAssetFront": "",
+          "primaryAssetBack": "",
+          "secondaryAsset": ""
+        },
+        "remnantStartCount": 5,
+        "abilities": []
     },
     {
         "name": "Ahsoka Tano",
