@@ -1,53 +1,30 @@
-### How to run
- - Run ```npm install``` to install dependencies
- - Run ```npm start```
+# SWGU-NEST
+ - This is back-end server for Star Wars Galaxy Ultimate. Insert, retrieve, modify, or delete game data.
+ - Hosted on Netlify at: [Add link here]()
+ - Front end for the project is hosted at: [https://star-wars-galaxy-ultimate.netlify.app/login](https://star-wars-galaxy-ultimate.netlify.app/login)
+ - The FE(game) will make API calls to this service which interacts with the DB, then sends responses back to the game.
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
-
-## Running the app
+## Running the app locally
 
 ```bash
 # development
 $ npm run start
 
-# watch mode
-$ npm run start:dev
+# development with hot reload
+$ npm run start:debug
 
 # production mode
 $ npm run start:prod
 ```
 
-## Test
+## Models
+Rest API's are built for 
+  - Players
+  - Toons
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Config
+ - The project is dependent upon the mongoDB connection url, username, and password. Find the .env file in the google drive. Or
+go to the mongodb website, get the username and url, then generate a new password. Make sure update the new one in the drive.
 
 ## License
-
-Nest is [MIT licensed](LICENSE).
+ - TODO: Make a license for this project... if you want...
