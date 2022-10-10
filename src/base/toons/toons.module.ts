@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { Ability, AbilitySchema } from 'src/schemas/ability/ability.schema';
-import { Toon, ToonSchema } from 'src/schemas/toon/toon.schema';
+import { Ability, AbilitySchema } from 'src/base/abilities/ability.schema';
+import { Toon, ToonSchema } from 'src/base/toons/toon.schema';
 import { ToonsController } from './toons.controller';
 import { ToonsService } from './toons.service';
 

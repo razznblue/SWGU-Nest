@@ -68,15 +68,6 @@
         "upgrades": ["ADD_FIVE_PERCENT_DAMAGE"],
         "cost": {
           "credits": "13500",
-          "abilityTokenXs": 17,
-          "abilityTokenYs": 10
-        }
-      },
-      {
-        "level": "8",
-        "upgrades": ["INCREASE_INFLICT_DEBUFF_PERCENTAGE_CHANCE_25"],
-        "cost": {
-          "credits": "21000",
           "abilityTokenZs": 7
         }
       }

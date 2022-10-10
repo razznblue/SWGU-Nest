@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { Toon } from '../toon/toon.schema';
+import { Toon } from '../toons/toon.schema';
 import { AbilityLevel } from '../../objects/ability_levels';
 import { StatusEffect } from '../../objects/status_effect';
 

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { Ability } from '../ability/ability.schema';
+import { Ability } from '../abilities/ability.schema';
 import { ToonMedia } from '../../objects/toon_media';
 import { ToonStats } from '../../objects/toon_stats';
 

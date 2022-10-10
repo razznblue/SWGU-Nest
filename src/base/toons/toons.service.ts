@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ToonDocument } from 'src/schemas/toon/toon.schema';
+import { ToonDocument } from 'src/base/toons/toon.schema';
 
 import { Toon, IToon } from './toons.model';
 
