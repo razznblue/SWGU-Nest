@@ -1,7 +1,7 @@
 # SWGU-NEST
  - This is back-end server for Star Wars Galaxy Ultimate. Insert, retrieve, modify, or delete game data.
- - Hosted on Heroku at: [Add link here]()
- - Front end for the project is hosted at: [https://star-wars-galaxy-ultimate.netlify.app/login](https://star-wars-galaxy-ultimate.netlify.app/login)
+ - Hosted on Heroku at: [https://swgu-nest.herokuapp.com/](https://swgu-nest.herokuapp.com/)
+ - Front end for the project is hosted at: [https://star-wars-galaxy-ultimate.netlify.app](https://star-wars-galaxy-ultimate.netlify.app)
  - The FE(game) will make API calls to this service which interacts with the DB, then sends responses back to the game.
 
 ## Running the app locally
