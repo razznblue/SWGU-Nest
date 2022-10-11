@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { genSalt, hash } from 'bcrypt';
 import { Player, PlayerDocument } from './player.schema';
 import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
 
@@ -29,6 +30,7 @@ export class PlayersService {
         username,
         password,
       });
+      player.password = await this.getHashedPassword(password);
       await player.save();
       return {
         result: this.successResponse('Player Created Successfully'),
@@ -74,10 +76,11 @@ export class PlayersService {
 
   async updatePlayerPut(id: string, updatePlayerDto: UpdatePlayerDto) {
     try {
-      const { username } = updatePlayerDto;
+      const { username, password } = updatePlayerDto;
       if (await this.playerModel.findOne({ username: username })) {
         throw new BadRequestException('Cannot update username. It is taken');
       }
+      updatePlayerDto.password = await this.getHashedPassword(password);
       const updatedPlayer = await this.playerModel
         .findByIdAndUpdate(id, updatePlayerDto)
         .exec();
@@ -102,7 +105,7 @@ export class PlayersService {
       player.username = username;
     }
     if (password) {
-      player.password = password;
+      player.password = await this.getHashedPassword(password);
     }
     player.save();
     return this.successResponse(`Updated player ${id} successfully`);
@@ -117,6 +120,11 @@ export class PlayersService {
     } catch (err) {
       this.handleError(err);
     }
+  }
+
+  private async getHashedPassword(password: string) {
+    const salt = await genSalt(10);
+    return await hash(password, salt);
   }
 
   private handleError(err: any) {
