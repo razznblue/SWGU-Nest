@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { PlayersService } from './player.service';
 import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
@@ -23,7 +24,10 @@ export class PlayersController {
   }
 
   @Get()
-  async getPlayers() {
+  async getPlayers(@Query('username') username: string) {
+    if (username) {
+      return await this.playersService.getPlayerByKey(username);
+    }
     return await this.playersService.getAllPlayers();
   }
 

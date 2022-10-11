@@ -1,0 +1,6 @@
+# A collection of helpful links
+
+Deploying a NestJS app to Heroku
+1) https://medium.com/weekly-webtips/deploying-a-nestjs-app-with-heroku-5fa84cb5b6c6
+2) https://medium.com/@terence410/setup-nestjs-server-on-heroku-1475c5cdb1d1
+2) https://www.youtube.com/watch?v=iRqShXIJtNYmongod

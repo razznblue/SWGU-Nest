@@ -30,7 +30,10 @@ export class PlayersService {
         password,
       });
       await player.save();
-      return { message: 'Player Created Successfully', playerData: player };
+      return {
+        result: this.successResponse('Player Created Successfully'),
+        playerData: player,
+      };
     } catch (error) {
       this.handleError(error);
     }
@@ -56,6 +59,19 @@ export class PlayersService {
     }
   }
 
+  async getPlayerByKey(username: string) {
+    try {
+      const player = await this.playerModel.findOne({ username: username });
+      if (!player) {
+        throw new NotFoundException('Player Not Found');
+      }
+      console.log(`Found a player by username: ${username}`);
+      return player;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
   async updatePlayerPut(id: string, updatePlayerDto: UpdatePlayerDto) {
     try {
       const { username } = updatePlayerDto;
@@ -68,7 +84,7 @@ export class PlayersService {
       if (!updatedPlayer.isModified) {
         throw new NotFoundException('Could not find Player');
       }
-      return 'Player Updated Successfully';
+      return this.successResponse('Player Updated Successfully');
     } catch (err) {
       this.handleError(err);
     }
@@ -89,12 +105,15 @@ export class PlayersService {
       player.password = password;
     }
     player.save();
+    return this.successResponse(`Updated player ${id} successfully`);
   }
 
   async deletePlayer(id: string) {
     try {
       const deletedPlayer = await this.playerModel.findByIdAndDelete(id).exec();
-      return `Successfully deleted player ${deletedPlayer._id}`;
+      return this.successResponse(
+        `Successfully deleted player ${deletedPlayer._id}`,
+      );
     } catch (err) {
       this.handleError(err);
     }
@@ -105,5 +124,12 @@ export class PlayersService {
       throw new HttpException(err.response.message, err.response.statusCode);
     }
     throw new InternalServerErrorException();
+  }
+
+  private successResponse(message: string) {
+    return {
+      responseCode: '200',
+      message: message,
+    };
   }
 }
