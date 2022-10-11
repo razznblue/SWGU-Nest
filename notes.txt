@@ -1,6 +1,18 @@
 # A collection of helpful links
 
+Other options to keep Heroku app from sleeping
+http://addons.heroku.com/newrelic
+https://keep-awake.herokuapp.com/
+http://uptimerobot.com/
+https://jsweekly.github.io/6%20Easy%20Ways%20to%20Prevent%20Your%20Heroku%20Node%20App%20From%20Sleeping.html
+
 Deploying a NestJS app to Heroku
 1) https://medium.com/weekly-webtips/deploying-a-nestjs-app-with-heroku-5fa84cb5b6c6
 2) https://medium.com/@terence410/setup-nestjs-server-on-heroku-1475c5cdb1d1
 2) https://www.youtube.com/watch?v=iRqShXIJtNYmongod
+
+Connecting your local repo to the Heroku project created on their website
+https://wajeeh-ahsan.medium.com/heroku-missing-required-flag-a-bfc7ba0a00f5
+
+Setting config vars Heroku CLI
+https://devcenter.heroku.com/articles/config-vars
