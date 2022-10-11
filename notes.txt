@@ -2,6 +2,7 @@
 
 Other options to keep Heroku app from sleeping
 http://addons.heroku.com/newrelic
+https://elements.heroku.com/addons/newrelic
 https://keep-awake.herokuapp.com/
 http://uptimerobot.com/
 https://jsweekly.github.io/6%20Easy%20Ways%20to%20Prevent%20Your%20Heroku%20Node%20App%20From%20Sleeping.html
