@@ -17,3 +17,8 @@ https://wajeeh-ahsan.medium.com/heroku-missing-required-flag-a-bfc7ba0a00f5
 
 Setting config vars Heroku CLI
 https://devcenter.heroku.com/articles/config-vars
+
+Generating secret tokens using crypto
+type this in a node console in the terminal
+require('crypto').randomBytes(64).toString('hex')
+I ran this once for the access_token and ran it a second time for the refresh_token

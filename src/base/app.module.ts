@@ -1,20 +1,27 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { PassportModule } from '@nestjs/passport';
 import { PlayersModule } from './player/player.module';
 import { ToonsModule } from './toons/toons.module';
+import { ConfigModule } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
+import { LocalStrategy } from './auth/local.strategy';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://swgu-admin:V6rvNLA7CKX9LOgi@swgu-core.99cnpbx.mongodb.net/?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
     ToonsModule,
     PlayersModule,
+    PassportModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthService, JwtService, LocalStrategy, JwtStrategy],
 })
 export class AppModule {}
