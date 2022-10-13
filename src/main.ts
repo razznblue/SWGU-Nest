@@ -7,7 +7,12 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const whitelist = ['http://localhost:3000', 'http://localhost:8080'];
+  // CORS Functionality
+  const whitelist = [
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'https://star-wars-galaxy-ultimate.netlify.app',
+  ];
   app.enableCors({
     origin: function (origin, callback) {
       console.log('origin: ', origin);
@@ -26,6 +31,7 @@ async function bootstrap() {
   });
   await app.listen(process.env.PORT || 8080);
 
+  // Prevent app from going to sleep on Heroku
   setInterval(async () => {
     await axios.get('https://swgu-nest.herokuapp.com/');
     console.log('App Pinged');
