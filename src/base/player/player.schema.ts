@@ -16,6 +16,9 @@ export class Player {
 
   @Prop()
   completedAt: Date;
+
+  @Prop()
+  refreshToken: string;
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

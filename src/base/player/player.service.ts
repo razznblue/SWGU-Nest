@@ -30,12 +30,9 @@ export class PlayersService {
         username,
         password,
       });
-      player.password = await this.getHashedPassword(password);
+      player.password = await this.hashData(password);
       await player.save();
-      return {
-        result: this.successResponse('Player Created Successfully'),
-        playerData: player,
-      };
+      return player;
     } catch (error) {
       this.handleError(error);
     }
@@ -61,10 +58,13 @@ export class PlayersService {
     }
   }
 
-  async getPlayerByKey(username: string) {
+  async getPlayerByKey(username: string, signUp?: boolean) {
     try {
       const player = await this.playerModel.findOne({ username: username });
       if (!player) {
+        if (signUp) {
+          return;
+        }
         throw new NotFoundException('Player Not Found');
       }
       console.log(`Found a player by username: ${username}`);
@@ -80,7 +80,7 @@ export class PlayersService {
       if (await this.playerModel.findOne({ username: username })) {
         throw new BadRequestException('Cannot update username. It is taken');
       }
-      updatePlayerDto.password = await this.getHashedPassword(password);
+      updatePlayerDto.password = await this.hashData(password);
       const updatedPlayer = await this.playerModel
         .findByIdAndUpdate(id, updatePlayerDto)
         .exec();
@@ -105,10 +105,22 @@ export class PlayersService {
       player.username = username;
     }
     if (password) {
-      player.password = await this.getHashedPassword(password);
+      player.password = await this.hashData(password);
     }
     player.save();
     return this.successResponse(`Updated player ${id} successfully`);
+  }
+
+  async updatePlayerRefreshToken(id: string, refreshToken: string) {
+    console.log('playerId: ', id);
+    console.log('refreshToken: ', refreshToken);
+    const player = await this.getSinglePlayer(id);
+    console.log('player found');
+    player.refreshToken =
+      refreshToken != null ? await this.hashData(refreshToken) : null;
+    console.log('try to save RT of ', player.refreshToken);
+    player.save();
+    return this.successResponse(`Updated refreshToken for player: ${id}`);
   }
 
   async deletePlayer(id: string) {
@@ -122,9 +134,9 @@ export class PlayersService {
     }
   }
 
-  private async getHashedPassword(password: string) {
+  private async hashData(data: string) {
     const salt = await genSalt(10);
-    return await hash(password, salt);
+    return await hash(data, salt);
   }
 
   private handleError(err: any) {

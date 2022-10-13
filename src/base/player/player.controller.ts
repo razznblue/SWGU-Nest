@@ -9,7 +9,9 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PlayersService } from './player.service';
 import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
 
@@ -36,6 +38,7 @@ export class PlayersController {
     return await this.playersService.getSinglePlayer(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async patchUpdate(
     @Param('id') id: string,
@@ -45,6 +48,7 @@ export class PlayersController {
     return await this.playersService.updatePlayerPatch(id, username, password);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -53,6 +57,7 @@ export class PlayersController {
     return await this.playersService.updatePlayerPut(id, UpdatePlayerDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.playersService.deletePlayer(id);

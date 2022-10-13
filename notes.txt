@@ -1,5 +1,8 @@
 # A collection of helpful links
 
+Heroku is gonna stop offerring their free tier nextmonth.... :(
+  - Need to find an alternative to host the server on
+
 Other options to keep Heroku app from sleeping
 http://addons.heroku.com/newrelic
 https://elements.heroku.com/addons/newrelic
@@ -18,7 +21,12 @@ https://wajeeh-ahsan.medium.com/heroku-missing-required-flag-a-bfc7ba0a00f5
 Setting config vars Heroku CLI
 https://devcenter.heroku.com/articles/config-vars
 
+JWT-Authenticationwith NestJS
+https://www.elvisduru.com/blog/nestjs-jwt-authentication-refresh-token
+
 Generating secret tokens using crypto
 type this in a node console in the terminal
-require('crypto').randomBytes(64).toString('hex')
+ - require('crypto').randomBytes(64).toString('hex')
 I ran this once for the access_token and ran it a second time for the refresh_token
+Alternatively, run this in the terminal
+  - node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"

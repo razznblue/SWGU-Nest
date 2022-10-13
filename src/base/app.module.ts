@@ -4,12 +4,16 @@ import { PassportModule } from '@nestjs/passport';
 import { PlayersModule } from './player/player.module';
 import { ToonsModule } from './toons/toons.module';
 import { ConfigModule } from '@nestjs/config';
+
 import { JwtService } from '@nestjs/jwt';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
-import { LocalStrategy } from './auth/local.strategy';
-import { JwtStrategy } from './auth/jwt.strategy';
+
+import { LocalStrategy } from './auth/strategies/local.strategy';
+import { JwtStrategy } from './auth/strategies/jwt.strategy';
+
 import { AppController } from './app.controller';
+import { AuthController } from './auth/auth.controller';
 
 @Module({
   imports: [
@@ -21,7 +25,7 @@ import { AppController } from './app.controller';
     PlayersModule,
     PassportModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtService, LocalStrategy, JwtStrategy],
 })
 export class AppModule {}

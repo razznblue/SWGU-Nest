@@ -1,6 +1,7 @@
 class BasePlayerDto {
   username: string;
   password: string;
+  refreshToken: string;
 }
 
 export class CreatePlayerDto extends BasePlayerDto {}
