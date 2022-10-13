@@ -19,7 +19,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req: any) {
-    console.log('logging in user: ', req.user._doc);
+    console.log('logging in user: ', req.user._doc.username);
     return this.authService.login(req.user._doc);
   }
 
@@ -32,7 +32,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('logout')
   logout(@Request() req: any) {
-    console.log('logging out user: ', req.user);
+    console.log('logging out user: ', req.user.userId);
     this.authService.logout(req.user.userId);
   }
 

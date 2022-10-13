@@ -31,10 +31,11 @@ export class AuthService {
   }
 
   async login(player: any) {
-    const payload = {
-      username: player.username,
-      sub: player._id.toString().replace(/\D/g, ''),
-    };
+    // const payload = {
+    //   username: player.username,
+    //   sub: player._id.toString().replace(/\D/g, ''),
+    // };
+    console.log('attempting to login in player: ', player);
 
     const tokens = await this.getTokens(player._id, player.username);
     await this.updateRefreshToken(player._id, tokens.refreshToken);
