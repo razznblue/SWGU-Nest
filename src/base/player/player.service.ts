@@ -112,13 +112,9 @@ export class PlayersService {
   }
 
   async updatePlayerRefreshToken(id: string, refreshToken: string) {
-    console.log('playerId: ', id);
-    console.log('refreshToken: ', refreshToken);
     const player = await this.getSinglePlayer(id);
-    console.log('player found');
     player.refreshToken =
       refreshToken != null ? await this.hashData(refreshToken) : null;
-    console.log('try to save RT of ', player.refreshToken);
     player.save();
     return this.successResponse(`Updated refreshToken for player: ${id}`);
   }

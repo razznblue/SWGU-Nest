@@ -19,21 +19,20 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req: any) {
-    console.log('logging in user: ', req.user._doc.username);
-    return this.authService.login(req.user._doc);
+    return await this.authService.login(req.user._doc);
   }
 
   @Post('signup')
-  signup(@Body() createPlayerDto: CreatePlayerDto) {
+  async signup(@Body() createPlayerDto: CreatePlayerDto) {
     console.log('signing up user: ', createPlayerDto.username);
-    return this.authService.signUp(createPlayerDto);
+    return await this.authService.signUp(createPlayerDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('logout')
-  logout(@Request() req: any) {
+  async logout(@Request() req: any) {
     console.log('logging out user: ', req.user.userId);
-    this.authService.logout(req.user.userId);
+    return await this.authService.logout(req.user.userId);
   }
 
   @UseGuards(RefreshTokenGuard)
