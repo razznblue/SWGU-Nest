@@ -1,8 +1,8 @@
 {
-  "name": "sw-app",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "swgu-nest",
+  "version": "0.0.2",
+  "description": "The swgu-nest is the back-end server powering the Star Wars Galaxy Ultimate game",
+  "author": "swgu",
   "private": true,
   "license": "UNLICENSED",
   "engines": {

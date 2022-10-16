@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -46,7 +47,7 @@ export class PlayersService {
     }
   }
 
-  async getSinglePlayer(id: string) {
+  async getPlayerById(id: string) {
     try {
       const player = await this.playerModel.findById(id).exec();
       if (!player) {
@@ -74,8 +75,22 @@ export class PlayersService {
     }
   }
 
-  async updatePlayerPut(id: string, updatePlayerDto: UpdatePlayerDto) {
+  async getPlayerRoles(id: string) {
+    const player = await this.playerModel.findById(id).exec();
+    if (player && player.roles) {
+      return player.roles;
+    }
+  }
+
+  async updatePlayerPut(
+    id: string,
+    updatePlayerDto: UpdatePlayerDto,
+    reqUserId: string,
+  ) {
     try {
+      if (reqUserId !== id) {
+        throw new ForbiddenException(`Forbidden Force Request`);
+      }
       const { username, password } = updatePlayerDto;
       if (await this.playerModel.findOne({ username: username })) {
         throw new BadRequestException('Cannot update username. It is taken');
@@ -93,7 +108,15 @@ export class PlayersService {
     }
   }
 
-  async updatePlayerPatch(id: string, username: string, password: string) {
+  async updatePlayerPatch(
+    id: string,
+    username: string,
+    password: string,
+    reqUserId: string,
+  ) {
+    if (reqUserId !== id) {
+      throw new ForbiddenException(`Forbidden Force Request`);
+    }
     if (await this.playerModel.findOne({ username: username })) {
       throw new BadRequestException('Cannot update username. It is taken');
     }
@@ -106,20 +129,24 @@ export class PlayersService {
     }
     if (password) {
       player.password = await this.hashData(password);
+      //console.log(`Updated user pwd with hash of ${player.password}`);
     }
     player.save();
     return this.successResponse(`Updated player ${id} successfully`);
   }
 
   async updatePlayerRefreshToken(id: string, refreshToken: string) {
-    const player = await this.getSinglePlayer(id);
+    const player = await this.getPlayerById(id);
     player.refreshToken =
       refreshToken != null ? await this.hashData(refreshToken) : null;
     player.save();
     return this.successResponse(`Updated refreshToken for player: ${id}`);
   }
 
-  async deletePlayer(id: string) {
+  async deletePlayer(id: string, reqUserId: string) {
+    if (reqUserId !== id) {
+      throw new ForbiddenException(`Forbidden Force Request`);
+    }
     try {
       const deletedPlayer = await this.playerModel.findByIdAndDelete(id).exec();
       return this.successResponse(

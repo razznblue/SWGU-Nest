@@ -112,7 +112,7 @@ export class AuthService {
   }
 
   async refreshTokens(playerId: string, refreshToken: string) {
-    const player = await this.playersService.getSinglePlayer(playerId);
+    const player = await this.playersService.getPlayerById(playerId);
     if (!player || !player.refreshToken)
       throw new ForbiddenException('Access Denied');
     const refreshTokenMatches = await compare(

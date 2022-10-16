@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Role } from '../auth/enums/role.enum';
 
 export type PlayerDocument = Player & Document;
 
@@ -19,6 +20,9 @@ export class Player {
 
   @Prop()
   refreshToken: string;
+
+  @Prop({ default: Role.Player })
+  roles: Role[];
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

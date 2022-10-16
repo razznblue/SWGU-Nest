@@ -5,7 +5,8 @@ export class AppService {
   root(): any {
     return {
       name: 'swgu-nest',
-      description: 'rest-api for Star Wars Galaxy Ultimate',
+      description:
+        'The main server powering the Star Wars Galaxy Ultimate game.',
       entities: ['Players', 'Toons'],
     };
   }
