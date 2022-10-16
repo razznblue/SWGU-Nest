@@ -23,9 +23,6 @@ export class Player {
 
   @Prop({ default: Role.Player })
   roles: Role[];
-
-  @Prop({ default: true })
-  active: boolean;
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);
