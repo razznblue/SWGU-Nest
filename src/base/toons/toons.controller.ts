@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { ToonsService } from './toons.service';
 import { IToon } from './toons.model';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/enums/role.enum';
 
 @Controller('toons')
 export class ToonsController {
@@ -20,6 +22,7 @@ export class ToonsController {
     return response;
   }
 
+  @Roles(Role.Admin)
   @Get()
   getAllToons() {
     return { toons: this.toonsService.getAllToons() };

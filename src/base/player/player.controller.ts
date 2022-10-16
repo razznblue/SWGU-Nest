@@ -9,9 +9,13 @@ import {
   Post,
   Put,
   Query,
+  Request,
   UseGuards,
 } from '@nestjs/common';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/enums/role.enum';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { PlayersService } from './player.service';
 import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
 
@@ -25,6 +29,8 @@ export class PlayersController {
     return response;
   }
 
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   async getPlayers(@Query('username') username: string) {
     if (username) {
@@ -35,7 +41,7 @@ export class PlayersController {
 
   @Get(':id')
   async getOnePlayer(@Param('id') id: string) {
-    return await this.playersService.getSinglePlayer(id);
+    return await this.playersService.getPlayerById(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -59,7 +65,8 @@ export class PlayersController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.playersService.deletePlayer(id);
+  async delete(@Param('id') id: string, @Request() req: any) {
+    console.log(req.user.userId);
+    return await this.playersService.deletePlayer(id, req.user.userId);
   }
 }

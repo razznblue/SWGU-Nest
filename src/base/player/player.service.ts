@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -46,7 +47,7 @@ export class PlayersService {
     }
   }
 
-  async getSinglePlayer(id: string) {
+  async getPlayerById(id: string) {
     try {
       const player = await this.playerModel.findById(id).exec();
       if (!player) {
@@ -71,6 +72,13 @@ export class PlayersService {
       return player;
     } catch (error) {
       this.handleError(error);
+    }
+  }
+
+  async getPlayerRoles(id: string) {
+    const player = await this.playerModel.findById(id).exec();
+    if (player && player.roles) {
+      return player.roles;
     }
   }
 
@@ -106,20 +114,27 @@ export class PlayersService {
     }
     if (password) {
       player.password = await this.hashData(password);
+      //console.log(`Updated user pwd with hash of ${player.password}`);
     }
     player.save();
     return this.successResponse(`Updated player ${id} successfully`);
   }
 
   async updatePlayerRefreshToken(id: string, refreshToken: string) {
-    const player = await this.getSinglePlayer(id);
+    const player = await this.getPlayerById(id);
     player.refreshToken =
       refreshToken != null ? await this.hashData(refreshToken) : null;
     player.save();
     return this.successResponse(`Updated refreshToken for player: ${id}`);
   }
 
-  async deletePlayer(id: string) {
+  async deletePlayer(id: string, reqUserId: string) {
+    // Change it to set active to false instead of deleting the entire document
+    console.log(`id: ${id}`);
+    console.log(`reqUserId: ${reqUserId}`);
+    if (reqUserId !== id) {
+      throw new ForbiddenException(`Forbidden Force Request`);
+    }
     try {
       const deletedPlayer = await this.playerModel.findByIdAndDelete(id).exec();
       return this.successResponse(
