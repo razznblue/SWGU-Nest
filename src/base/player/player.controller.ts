@@ -39,6 +39,7 @@ export class PlayersController {
     return await this.playersService.getAllPlayers();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getOnePlayer(@Param('id') id: string) {
     return await this.playersService.getPlayerById(id);
@@ -50,8 +51,14 @@ export class PlayersController {
     @Param('id') id: string,
     @Body('username') username: string,
     @Body('password') password: string,
+    @Request() req: any,
   ) {
-    return await this.playersService.updatePlayerPatch(id, username, password);
+    return await this.playersService.updatePlayerPatch(
+      id,
+      username,
+      password,
+      req.user.userId,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -59,8 +66,13 @@ export class PlayersController {
   async update(
     @Param('id') id: string,
     @Body() UpdatePlayerDto: UpdatePlayerDto,
+    @Request() req: any,
   ) {
-    return await this.playersService.updatePlayerPut(id, UpdatePlayerDto);
+    return await this.playersService.updatePlayerPut(
+      id,
+      UpdatePlayerDto,
+      req.user.userId,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

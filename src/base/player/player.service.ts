@@ -82,8 +82,15 @@ export class PlayersService {
     }
   }
 
-  async updatePlayerPut(id: string, updatePlayerDto: UpdatePlayerDto) {
+  async updatePlayerPut(
+    id: string,
+    updatePlayerDto: UpdatePlayerDto,
+    reqUserId: string,
+  ) {
     try {
+      if (reqUserId !== id) {
+        throw new ForbiddenException(`Forbidden Force Request`);
+      }
       const { username, password } = updatePlayerDto;
       if (await this.playerModel.findOne({ username: username })) {
         throw new BadRequestException('Cannot update username. It is taken');
@@ -101,7 +108,15 @@ export class PlayersService {
     }
   }
 
-  async updatePlayerPatch(id: string, username: string, password: string) {
+  async updatePlayerPatch(
+    id: string,
+    username: string,
+    password: string,
+    reqUserId: string,
+  ) {
+    if (reqUserId !== id) {
+      throw new ForbiddenException(`Forbidden Force Request`);
+    }
     if (await this.playerModel.findOne({ username: username })) {
       throw new BadRequestException('Cannot update username. It is taken');
     }
@@ -129,9 +144,6 @@ export class PlayersService {
   }
 
   async deletePlayer(id: string, reqUserId: string) {
-    // Change it to set active to false instead of deleting the entire document
-    console.log(`id: ${id}`);
-    console.log(`reqUserId: ${reqUserId}`);
     if (reqUserId !== id) {
       throw new ForbiddenException(`Forbidden Force Request`);
     }
