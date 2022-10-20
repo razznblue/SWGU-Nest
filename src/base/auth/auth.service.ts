@@ -31,24 +31,15 @@ export class AuthService {
   }
 
   async login(player: any) {
-    // const payload = {
-    //   username: player.username,
-    //   sub: player._id.toString().replace(/\D/g, ''),
-    // };
     console.log('attempting to login in player: ', player._id);
 
     const tokens = await this.getTokens(player._id, player.username);
     await this.updateRefreshToken(player._id, tokens.refreshToken);
-    return tokens;
-
-    // const options = {
-    //   secret: process.env.SECRET,
-    //   privateKey: process.env.PRIVATE_KEY,
-    // };
-    // console.log(payload);
-    // return {
-    //   access_token: this.jwtService.sign(payload, options),
-    // };
+    return {
+      playerId: player._id,
+      roles: player.roles,
+      tokens: tokens,
+    };
   }
 
   async signUp(createPlayerDto: CreatePlayerDto) {
