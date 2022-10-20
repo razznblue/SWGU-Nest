@@ -8,11 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // CORS Functionality
-  const whitelist = [
-    'http://localhost:3000',
-    'http://localhost:8080',
-    'https://star-wars-galaxy-ultimate.netlify.app',
-  ];
+  const whitelist = process.env.ALLOWED_ORIGINS.split(' ');
   app.enableCors({
     origin: function (origin, callback) {
       console.log('origin: ', origin);
