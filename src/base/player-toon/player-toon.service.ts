@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { PlayerToon, PlayerToonDocument } from './player-toon.schema';
 import { Player, PlayerDocument } from '../player/player.schema';
 import { CreateToonDto } from '../toons/toonDTO';
+import { Util } from 'src/util/util';
 
 @Injectable()
 export class PlayerToonsService {
@@ -25,8 +26,9 @@ export class PlayerToonsService {
     if (!player) {
       throw new BadRequestException('PlayerID does not exist');
     }
-    console.log(createToonDto);
-    console.log(createToonDto.uniqueName);
+    const { name, tags } = createToonDto;
+    const createdAt = Util.getCurrentDate();
+    const playerToonId = Util.generateToonId(name, createdAt, tags);
     if (
       await this.playerToonModel.findOne({
         uniqueName: createToonDto.uniqueName,
@@ -39,8 +41,17 @@ export class PlayerToonsService {
     const toon = new this.playerToonModel({
       ...createToonDto,
     });
+    toon._id = playerToonId;
+    toon.createdAt = createdAt;
+    toon.playerId = playerId;
     await toon.save();
     console.log(`Saved new Toon with uniqueName: ${createToonDto.uniqueName}`);
+
+    player.playerToons.push(toon._id);
+    await player.save();
+    console.log(
+      `Added a new Toon: ${toon._id} to roster of player ${player._id}`,
+    );
     return toon;
   }
 
@@ -52,11 +63,22 @@ export class PlayerToonsService {
     }
   }
 
-  async deletePlayerToon(playerToonId: string) {
+  async deletePlayerToon(playerToonId: string, playerId: string) {
+    const player = await this.playerModel.findById(playerId);
+    if (!player) {
+      throw new BadRequestException('PlayerID does not exist');
+    }
     try {
       const deletedPlayerToon = await this.playerToonModel
         .findByIdAndDelete(playerToonId)
         .exec();
+
+      const updatedPlayerToons = Util.removeValueFromArray(
+        player.playerToons,
+        playerToonId,
+      );
+      player.playerToons = updatedPlayerToons;
+      await player.save();
       return this.successResponse(
         `Successfully deleted playerToon ${deletedPlayerToon._id}`,
       );

@@ -3,13 +3,15 @@ import mongoose, { Document } from 'mongoose';
 import { Ability } from '../abilities/ability.schema';
 import { ToonMedia } from '../../objects/toon_media';
 import { ToonStats } from '../../objects/toon_stats';
-import { Player } from '../player/player.schema';
 import { Util } from 'src/util/util';
 
 export type PlayerToonDocument = PlayerToon & Document;
 
 @Schema()
 export class PlayerToon {
+  @Prop()
+  _id: string;
+
   @Prop({ required: true })
   name: string;
 
@@ -46,8 +48,8 @@ export class PlayerToon {
   @Prop()
   description?: string;
 
-  @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Player' } })
-  playerId: Player;
+  @Prop()
+  playerId: string;
 
   @Prop({ default: Util.getCurrentDate() })
   createdAt: string;

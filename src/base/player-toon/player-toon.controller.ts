@@ -28,6 +28,7 @@ export class PlayerToonsController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getPlayerToons() {
     return await this.playerToonsService.getPlayerToons();
@@ -35,7 +36,7 @@ export class PlayerToonsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.playerToonsService.deletePlayerToon(id);
+  async delete(@Param('id') id: string, @Request() req: any) {
+    return await this.playerToonsService.deletePlayerToon(id, req.user.userId);
   }
 }

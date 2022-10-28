@@ -1,9 +1,9 @@
 export const Util = {
-  generateToonId(toon: any) {
+  generateToonId(toonName: string, createdAt: string, tags: string[]) {
     let id = '';
 
     // Add ID Prefix(based on toon name)
-    const toonNameSplitted = toon.name
+    const toonNameSplitted = toonName
       .replace('(', '')
       .replace(')', '')
       .split(' ');
@@ -14,11 +14,11 @@ export const Util = {
     id += '-';
 
     // Add unique number to ID(based on toon createdAt)
-    const uniqueDateId = toon.createdAt.replace(/\D/g, '');
+    const uniqueDateId = createdAt.replace(/\D/g, '');
     id += uniqueDateId + '-';
 
     // Add ID Suffix(based on toon tags)
-    for (const tag of toon.tags) {
+    for (const tag of tags) {
       const tagWords = tag.split(' ');
       for (const tagWord of tagWords) {
         id += tagWord.split('')[0].toUpperCase();
@@ -30,6 +30,14 @@ export const Util = {
 
   getCurrentDate() {
     return new Date().toISOString();
+  },
+
+  removeValueFromArray(arr: string[], value: string) {
+    const index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    return arr;
   },
 };
 
