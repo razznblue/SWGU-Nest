@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { PlayersModule } from './player/player.module';
 import { ToonsModule } from './toons/toons.module';
+import { PlayerToonModule } from './player-toon/player-toon.module';
 import { ConfigModule } from '@nestjs/config';
 
 import { JwtService } from '@nestjs/jwt';
@@ -23,6 +24,7 @@ import { AuthController } from './auth/auth.controller';
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
     ToonsModule,
     PlayersModule,
+    PlayerToonModule,
     PassportModule,
   ],
   controllers: [AppController, AuthController],

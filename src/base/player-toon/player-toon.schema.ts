@@ -3,11 +3,13 @@ import mongoose, { Document } from 'mongoose';
 import { Ability } from '../abilities/ability.schema';
 import { ToonMedia } from '../../objects/toon_media';
 import { ToonStats } from '../../objects/toon_stats';
+import { Player } from '../player/player.schema';
+import { Util } from 'src/util/util';
 
-export type ToonDocument = Toon & Document;
+export type PlayerToonDocument = PlayerToon & Document;
 
 @Schema()
-export class Toon {
+export class PlayerToon {
   @Prop({ required: true })
   name: string;
 
@@ -32,7 +34,7 @@ export class Toon {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ability' }] })
   abilities: Ability[];
 
-  @Prop({ default: false })
+  @Prop({ default: true })
   unlocked: boolean;
 
   @Prop()
@@ -44,11 +46,11 @@ export class Toon {
   @Prop()
   description?: string;
 
-  @Prop()
-  createdAt: string;
+  @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Player' } })
+  playerId: Player;
 
-  @Prop()
-  completedAt: Date;
+  @Prop({ default: Util.getCurrentDate() })
+  createdAt: string;
 }
 
-export const ToonSchema = SchemaFactory.createForClass(Toon);
+export const PlayerToonSchema = SchemaFactory.createForClass(PlayerToon);
