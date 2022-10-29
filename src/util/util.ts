@@ -32,6 +32,19 @@ export const Util = {
     return new Date().toISOString();
   },
 
+  filterObjectsByTag(objects: Array<any>, tagFilter: string) {
+    const filteredToons = [];
+    for (const object of objects) {
+      object.tags.map((tag: string) => {
+        if (tag === tagFilter) {
+          filteredToons.push(object);
+        }
+        return objects;
+      });
+    }
+    return filteredToons;
+  },
+
   sortObjectByKey(object: any, key: string) {
     const n = object.length;
     for (let i = 0; i < n - 1; i++) {

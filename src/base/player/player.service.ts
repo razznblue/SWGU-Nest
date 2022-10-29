@@ -24,18 +24,21 @@ export class PlayersService {
     private readonly toonsService: ToonsService,
   ) {}
 
-  async getRoster(userId: string) {
+  async getRoster(userId: string, tagFilter: string) {
+    console.log('attempting to get roster');
     // Validate User
     const player = await this.getPlayerById(userId);
     if (!player) {
       throw new NotFoundException('Player not found');
     }
 
-    const genericToons = await this.toonsService.getAllToons();
+    // Get current player's unlocked toons
     const playerToons = await this.playerToonsService.getLoggedInPlayersToons(
       userId,
     );
+    const genericToons = await this.toonsService.getAllToons();
 
+    // Remove any existing player toons from genericToons
     const unlockedToons = [];
     const lockedToons = [];
     let playerUnlocked = false;
@@ -52,12 +55,25 @@ export class PlayersService {
       playerUnlocked = false;
     }
 
-    //Sort toon sets then combine
+    // Sort Toon Sets
     const sortedLockedToons = Util.sortObjectByKey(lockedToons, 'name');
     const sortedUnlockedToons = unlockedToons.sort((a, b) => {
       return b.stats.power - a.stats.power;
     });
-    return sortedUnlockedToons.concat(sortedLockedToons);
+
+    // Apply tagFilter, if any
+    return tagFilter !== undefined && tagFilter !== null
+      ? Util.filterObjectsByTag(sortedUnlockedToons, tagFilter).concat(
+          Util.filterObjectsByTag(sortedLockedToons, tagFilter),
+        )
+      : sortedUnlockedToons.concat(sortedLockedToons);
+    // if (tagFilter !== undefined && tagFilter !== null) {
+    //   return Util.filterObjectsByTag(sortedUnlockedToons, tagFilter).concat(
+    //     Util.filterObjectsByTag(sortedLockedToons, tagFilter),
+    //   );
+    // } else {
+    //   return sortedUnlockedToons.concat(sortedLockedToons);
+    // }
   }
 
   async createPlayer(createPlayerDto: CreatePlayerDto) {

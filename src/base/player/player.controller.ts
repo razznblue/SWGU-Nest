@@ -27,11 +27,15 @@ export class PlayersController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id/roster')
-  async getRoster(@Param('id') userId: string, @Request() req: any) {
+  async getRoster(
+    @Param('id') userId: string,
+    @Request() req: any,
+    @Query('tagFilter') tagFilter: string,
+  ) {
     if (userId !== req.user.userId) {
       throw new ForbiddenException();
     }
-    return await this.playersService.getRoster(req.user.userId);
+    return await this.playersService.getRoster(req.user.userId, tagFilter);
   }
 
   @Post('create')
