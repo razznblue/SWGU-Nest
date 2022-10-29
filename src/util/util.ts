@@ -32,6 +32,11 @@ export const Util = {
     return new Date().toISOString();
   },
 
+  valueExistsInArray(arr: string[], value: string) {
+    const index = arr.indexOf(value);
+    return index > -1 ? true : false;
+  },
+
   removeValueFromArray(arr: string[], value: string) {
     const index = arr.indexOf(value);
     if (index > -1) {

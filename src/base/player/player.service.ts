@@ -11,13 +11,46 @@ import { Model } from 'mongoose';
 import { genSalt, hash } from 'bcrypt';
 import { Player, PlayerDocument } from './player.schema';
 import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
+import { PlayerToonsService } from '../player-toon/player-toon.service';
+import { ToonsService } from '../toons/toons.service';
 
 @Injectable()
 export class PlayersService {
   constructor(
     @InjectModel(Player.name)
     private readonly playerModel: Model<PlayerDocument>,
+    private readonly playerToonsService: PlayerToonsService,
+    private readonly toonsService: ToonsService,
   ) {}
+
+  async getRoster(userId: string) {
+    // Validate User
+    const player = await this.getPlayerById(userId);
+    if (!player) {
+      throw new NotFoundException();
+    }
+
+    const genericToons = await this.toonsService.getAllToons();
+    const playerToons = await this.playerToonsService.getLoggedInPlayersToons(
+      userId,
+    );
+
+    const finalRoster = [];
+    let playerUnlocked = false;
+    for (const genericToon of genericToons) {
+      for (const playerToon of playerToons) {
+        if (genericToon.uniqueName === playerToon.uniqueName) {
+          playerUnlocked = true;
+          finalRoster.push(playerToon);
+        }
+      }
+      if (!playerUnlocked) {
+        finalRoster.push(genericToon);
+      }
+      playerUnlocked = false;
+    }
+    return finalRoster;
+  }
 
   async createPlayer(createPlayerDto: CreatePlayerDto) {
     try {

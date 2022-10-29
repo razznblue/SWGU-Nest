@@ -9,7 +9,6 @@ import {
   Param,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CreateToonDto } from '../toons/toonDTO';
 import { PlayerToonsService } from './player-toon.service';
 
 @Controller('playerToons')
@@ -19,11 +18,11 @@ export class PlayerToonsController {
   @UseGuards(JwtAuthGuard)
   @Post('create')
   async createPlayerToon(
-    @Body() createToonDto: CreateToonDto,
+    @Body('name') uniqueName: string,
     @Request() req: any,
   ) {
     return await this.playerToonsService.createPlayerToon(
-      createToonDto,
+      uniqueName,
       req.user.userId,
     );
   }
@@ -32,6 +31,13 @@ export class PlayerToonsController {
   @Get()
   async getPlayerToons() {
     return await this.playerToonsService.getPlayerToons();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getPlayerToonById(@Param('id') playerToonId: string) {
+    console.log(playerToonId);
+    return await this.playerToonsService.getPlayerToonById(playerToonId);
   }
 
   @UseGuards(JwtAuthGuard)

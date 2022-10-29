@@ -15,5 +15,6 @@ import { ToonsService } from './toons.service';
   ],
   controllers: [ToonsController],
   providers: [ToonsService],
+  exports: [ToonsService],
 })
 export class ToonsModule {}
