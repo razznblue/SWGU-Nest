@@ -1,3 +1,11 @@
+/* Temp Toon won't be stored in th DB
+  It'll be used in game for the turn-based battles and we don't need to store that info.
+
+  However, possibly we will keep trak of stats in the battle such as 
+  damage dealt/taken, attacks evaded, debuffs inflicted, hit percentage, etc.
+  and store that data into it's own collection attached to the Player
+*/
+
 // attackToon(opponent) {
 //     if (opponent instanceof Toon) {
 //         if (this.successfulAttack(opponent)) {

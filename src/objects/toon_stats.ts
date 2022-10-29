@@ -1,4 +1,5 @@
 export interface IToonStats {
+  power: number;
   speed: string;
   offense: string;
   defense: string;
@@ -10,6 +11,7 @@ export interface IToonStats {
 }
 
 export class ToonStats {
+  power: number;
   speed: string;
   offense: string;
   defense: string;
@@ -20,6 +22,7 @@ export class ToonStats {
   criticalDamagePercentage: number;
 
   constructor(toonStatData: IToonStats) {
+    this.power = toonStatData.power;
     this.speed = toonStatData.speed;
     this.offense = toonStatData.offense;
     this.defense = toonStatData.defense;
@@ -28,6 +31,10 @@ export class ToonStats {
     this.evasion = toonStatData.evasion;
     this.criticalChancePercentage = toonStatData.criticalChancePercentage;
     this.criticalDamagePercentage = toonStatData.criticalDamagePercentage;
+  }
+
+  getPower() {
+    return this.power;
   }
 
   getSpeed() {

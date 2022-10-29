@@ -13,6 +13,7 @@ import { Player, PlayerDocument } from './player.schema';
 import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
 import { PlayerToonsService } from '../player-toon/player-toon.service';
 import { ToonsService } from '../toons/toons.service';
+import { Util } from 'src/util/util';
 
 @Injectable()
 export class PlayersService {
@@ -27,7 +28,7 @@ export class PlayersService {
     // Validate User
     const player = await this.getPlayerById(userId);
     if (!player) {
-      throw new NotFoundException();
+      throw new NotFoundException('Player not found');
     }
 
     const genericToons = await this.toonsService.getAllToons();
@@ -35,21 +36,28 @@ export class PlayersService {
       userId,
     );
 
-    const finalRoster = [];
+    const unlockedToons = [];
+    const lockedToons = [];
     let playerUnlocked = false;
     for (const genericToon of genericToons) {
       for (const playerToon of playerToons) {
         if (genericToon.uniqueName === playerToon.uniqueName) {
           playerUnlocked = true;
-          finalRoster.push(playerToon);
+          unlockedToons.push(playerToon);
         }
       }
       if (!playerUnlocked) {
-        finalRoster.push(genericToon);
+        lockedToons.push(genericToon);
       }
       playerUnlocked = false;
     }
-    return finalRoster;
+
+    //Sort toon sets then combine
+    const sortedLockedToons = Util.sortObjectByKey(lockedToons, 'name');
+    const sortedUnlockedToons = unlockedToons.sort((a, b) => {
+      return b.stats.power - a.stats.power;
+    });
+    return sortedUnlockedToons.concat(sortedLockedToons);
   }
 
   async createPlayer(createPlayerDto: CreatePlayerDto) {

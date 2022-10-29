@@ -32,6 +32,46 @@ export const Util = {
     return new Date().toISOString();
   },
 
+  sortObjectByKey(object: any, key: string) {
+    const n = object.length;
+    for (let i = 0; i < n - 1; i++) {
+      let min = object[i][key];
+      let minIndex = i;
+      for (let j = i; j < n; j++) {
+        if (object[j][key] <= min) {
+          min = object[j][key];
+          minIndex = j;
+        }
+      }
+      let tmp: any;
+      // eslint-disable-next-line prefer-const
+      tmp = object[minIndex];
+      object[minIndex] = object[i];
+      object[i] = tmp;
+    }
+    return object;
+  },
+
+  sortObjectByNestedKey(object: any, key: string, nestedKey: string) {
+    const n = object.length;
+    for (let i = 0; i < n - 1; i++) {
+      let min = object[i][key][nestedKey];
+      let minIndex = i;
+      for (let j = i; j < n; j++) {
+        if (object[j][key][nestedKey] <= min) {
+          min = object[j][key][nestedKey];
+          minIndex = j;
+        }
+      }
+      let tmp: any;
+      // eslint-disable-next-line prefer-const
+      tmp = object[minIndex];
+      object[minIndex] = object[i];
+      object[i] = tmp;
+    }
+    return object;
+  },
+
   valueExistsInArray(arr: string[], value: string) {
     const index = arr.indexOf(value);
     return index > -1 ? true : false;
@@ -43,6 +83,10 @@ export const Util = {
       arr.splice(index, 1);
     }
     return arr;
+  },
+
+  getRandomIndex(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   },
 };
 
