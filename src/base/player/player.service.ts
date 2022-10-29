@@ -11,13 +11,70 @@ import { Model } from 'mongoose';
 import { genSalt, hash } from 'bcrypt';
 import { Player, PlayerDocument } from './player.schema';
 import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
+import { PlayerToonsService } from '../player-toon/player-toon.service';
+import { ToonsService } from '../toons/toons.service';
+import { Util } from 'src/util/util';
 
 @Injectable()
 export class PlayersService {
   constructor(
     @InjectModel(Player.name)
     private readonly playerModel: Model<PlayerDocument>,
+    private readonly playerToonsService: PlayerToonsService,
+    private readonly toonsService: ToonsService,
   ) {}
+
+  async getRoster(userId: string, tagFilter: string) {
+    console.log('attempting to get roster');
+    // Validate User
+    const player = await this.getPlayerById(userId);
+    if (!player) {
+      throw new NotFoundException('Player not found');
+    }
+
+    // Get current player's unlocked toons
+    const playerToons = await this.playerToonsService.getLoggedInPlayersToons(
+      userId,
+    );
+    const genericToons = await this.toonsService.getAllToons();
+
+    // Remove any existing player toons from genericToons
+    const unlockedToons = [];
+    const lockedToons = [];
+    let playerUnlocked = false;
+    for (const genericToon of genericToons) {
+      for (const playerToon of playerToons) {
+        if (genericToon.uniqueName === playerToon.uniqueName) {
+          playerUnlocked = true;
+          unlockedToons.push(playerToon);
+        }
+      }
+      if (!playerUnlocked) {
+        lockedToons.push(genericToon);
+      }
+      playerUnlocked = false;
+    }
+
+    // Sort Toon Sets
+    const sortedLockedToons = Util.sortObjectByKey(lockedToons, 'name');
+    const sortedUnlockedToons = unlockedToons.sort((a, b) => {
+      return b.stats.power - a.stats.power;
+    });
+
+    // Apply tagFilter, if any
+    return tagFilter !== undefined && tagFilter !== null
+      ? Util.filterObjectsByTag(sortedUnlockedToons, tagFilter).concat(
+          Util.filterObjectsByTag(sortedLockedToons, tagFilter),
+        )
+      : sortedUnlockedToons.concat(sortedLockedToons);
+    // if (tagFilter !== undefined && tagFilter !== null) {
+    //   return Util.filterObjectsByTag(sortedUnlockedToons, tagFilter).concat(
+    //     Util.filterObjectsByTag(sortedLockedToons, tagFilter),
+    //   );
+    // } else {
+    //   return sortedUnlockedToons.concat(sortedLockedToons);
+    // }
+  }
 
   async createPlayer(createPlayerDto: CreatePlayerDto) {
     try {

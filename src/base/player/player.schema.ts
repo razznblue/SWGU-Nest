@@ -23,6 +23,9 @@ export class Player {
 
   @Prop({ default: Role.Player })
   roles: Role[];
+
+  @Prop()
+  playerToons: string[];
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

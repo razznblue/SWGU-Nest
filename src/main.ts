@@ -1,4 +1,4 @@
-import axios from 'axios';
+//import axios from 'axios';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './base/app.module';
 
@@ -11,7 +11,6 @@ async function bootstrap() {
   const whitelist = process.env.ALLOWED_ORIGINS.split(' ');
   app.enableCors({
     origin: function (origin, callback) {
-      console.log('origin: ', origin);
       if (!origin || whitelist.indexOf(origin) !== -1) {
         console.log('allowed cors for:', origin);
         callback(null, true);
@@ -28,10 +27,10 @@ async function bootstrap() {
   await app.listen(process.env.PORT || 8080);
 
   // Prevent app from going to sleep on Heroku
-  setInterval(async () => {
-    await axios.get('https://swgu-nest.herokuapp.com/');
-    console.log('App Pinged');
-  }, 300000);
+  // setInterval(async () => {
+  //   await axios.get('https://swgu-nest.herokuapp.com/');
+  //   console.log('App Pinged');
+  // }, 300000);
 
   if (module.hot) {
     module.hot.accept();

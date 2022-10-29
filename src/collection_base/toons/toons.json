@@ -23,17 +23,27 @@
         "abilities": []
     },
     {
-        "name": "Ahsoka Tano",
+        "name": "Padawan Ahsoka Tano",
         "shortName": "Ahsoka",
         "aliases": ["Clone Wars Ahsoka Tano"],
         "tags": ["Light Side", "Jedi", "Galactic Republic"],
-        "photo": "",
-        "speed": 130,
-        "attack": 85,
-        "defense": 75,
-        "health": 350,
-        "protection": 0,
-        "evasion": 1200
+        "stats": {
+          "speed": 115,
+          "attack": 130,
+          "defense": 30,
+          "health": 500,
+          "protection": 0,
+          "evasion": 650,
+          "criticalChancePercentage": 21,
+          "criticalDamagePercentage": 125
+        },
+        "media": {
+          "primaryAssetFront": "",
+          "primaryAssetBack": "",
+          "secondaryAsset": ""
+        },
+        "remnantStartCount": 5,
+        "abilities": []
     },
     {
         "name": "George",

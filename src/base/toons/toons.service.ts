@@ -1,58 +1,71 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ToonDocument } from 'src/base/toons/toon.schema';
-
-import { Toon, IToon } from './toons.model';
+import { Toon, ToonDocument } from 'src/base/toons/toon.schema';
+import { CreateToonDto } from './toonDTO';
 
 @Injectable()
 export class ToonsService {
-  // Inject the ToonModel(Schema) into this class
   constructor(
-    @InjectModel(Toon.name) private readonly toonModel: Model<ToonDocument>,
+    @InjectModel(Toon.name)
+    private readonly toonModel: Model<ToonDocument>,
   ) {}
-  private toons: Toon[] = [];
 
-  createToon(toonInfo: IToon) {
-    //const toon = new Toon(toonInfo);
-    //const toon = new this.toonModel({ toonInfo });
-    this.toons.push(new Toon(toonInfo));
-    return this.toons[0];
-  }
-
-  getAllToons() {
-    return [...this.toons];
-  }
-
-  getToon(toonId: string) {
-    // handle DB call for Production
-    const toon = this.findToonById(toonId)[0];
-    return { ...toon };
-  }
-
-  updateToon(toonId: string, name: string, tags: string[]) {
-    const [toon, toonIndex] = this.findToonById(toonId);
-    const updatedToon = toon;
-    if (name) {
-      updatedToon.name = name;
+  async createToon(createToonDto: CreateToonDto) {
+    if (
+      await this.toonModel.findOne({ uniqueName: createToonDto.uniqueName })
+    ) {
+      throw new BadRequestException(
+        `Cannot create Toon. ${createToonDto.uniqueName} already exists`,
+      );
     }
-    if (tags) {
-      updatedToon.tags = tags;
+    const toon = new this.toonModel({
+      ...createToonDto,
+    });
+    await toon.save();
+    console.log(`Saved new Toon with uniqueName: ${createToonDto.uniqueName}`);
+    return toon;
+  }
+
+  async getAllToons() {
+    try {
+      return await this.toonModel.find().exec();
+    } catch (error) {
+      this.handleError(error);
     }
-    this.toons[toonIndex] = updatedToon;
   }
 
-  deleteToon(toonId: string) {
-    const toonIndex = this.findToonById(toonId)[1];
-    this.toons.splice(toonIndex, 1);
+  async getToonByUniqueName(uniqueName: string) {
+    try {
+      const toon = await this.toonModel.findOne({ uniqueName: uniqueName });
+      if (!toon) {
+        throw new NotFoundException('Toon Not Found');
+      }
+      console.log(`Found a toon by uniqueName: ${uniqueName}`);
+      return toon;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 
-  private findToonById(toonId: string): [Toon, number] {
-    const toonIndex = this.toons.findIndex((toon) => toon.getId() === toonId);
-    const toon = this.toons[toonIndex];
+  async getToonById(toonId: string) {
+    const toon = await this.toonModel.findById(toonId);
     if (!toon) {
-      throw new NotFoundException(`Could not find toon with id ${toonId}`);
+      return new BadRequestException(`Toon does not exist`);
     }
-    return [toon, toonIndex];
+    return toon;
+  }
+
+  private handleError(err: any) {
+    if (err.response) {
+      throw new HttpException(err.response.message, err.response.statusCode);
+    }
+    throw new InternalServerErrorException();
   }
 }

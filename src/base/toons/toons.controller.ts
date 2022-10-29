@@ -6,45 +6,47 @@ import {
   Param,
   Patch,
   Delete,
+  BadRequestException,
 } from '@nestjs/common';
 import { ToonsService } from './toons.service';
-import { IToon } from './toons.model';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { Role } from '../auth/enums/role.enum';
+import { CreateToonDto } from './toonDTO';
 
 @Controller('toons')
 export class ToonsController {
   constructor(private readonly toonsService: ToonsService) {}
 
   @Post('create')
-  addToon(@Body() toonData: IToon): any {
-    const response = this.toonsService.createToon(toonData);
+  async addToon(@Body() createToonDto: CreateToonDto): Promise<any> {
+    const response = await this.toonsService.createToon(createToonDto);
     return response;
   }
 
-  @Roles(Role.Admin)
   @Get()
-  getAllToons() {
-    return { toons: this.toonsService.getAllToons() };
+  async getAllToons() {
+    return { toons: await this.toonsService.getAllToons() };
   }
 
-  @Get(':id')
-  getToon(@Param('id') toonId: string) {
-    return this.toonsService.getToon(toonId);
+  @Get(':name')
+  async getToonByUniqueName(@Param('name') toonUniqueName: string) {
+    return await this.toonsService.getToonByUniqueName(toonUniqueName);
+  }
+
+  @Get('id/:id')
+  async getToon(@Param('id') toonId: string) {
+    return await this.toonsService.getToonById(toonId);
   }
 
   @Patch(':id')
-  updateToon(
-    @Param('id') toonId: string,
-    @Body('name') toonName: string,
-    @Body('tags') toonTags: string[],
-  ) {
-    this.toonsService.updateToon(toonId, toonName, toonTags);
-    return null;
+  updateToon() {
+    return new BadRequestException(
+      'Method PUT has not yet been implemented for entity Toon',
+    );
   }
 
   @Delete(':id')
-  deleteToon(@Param('id') toonId: string) {
-    this.toonsService.deleteToon(toonId);
+  deleteToon() {
+    return new BadRequestException(
+      'Method DELETE has not yet been implemented for entity Toon',
+    );
   }
 }

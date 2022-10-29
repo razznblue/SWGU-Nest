@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Patch,
@@ -10,6 +11,7 @@ import {
   Put,
   Query,
   Request,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -22,6 +24,19 @@ import { CreatePlayerDto, UpdatePlayerDto } from './playerDTO';
 @Controller('players')
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/roster')
+  async getRoster(
+    @Param('id') userId: string,
+    @Request() req: any,
+    @Query('tagFilter') tagFilter: string,
+  ) {
+    if (userId !== req.user.userId) {
+      throw new ForbiddenException();
+    }
+    return await this.playersService.getRoster(req.user.userId, tagFilter);
+  }
 
   @Post('create')
   async addPlayer(@Body() createPlayerDto: CreatePlayerDto) {
