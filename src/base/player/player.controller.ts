@@ -93,7 +93,6 @@ export class PlayersController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string, @Request() req: any) {
-    console.log(req.user.userId);
     return await this.playersService.deletePlayer(id, req.user.userId);
   }
 }

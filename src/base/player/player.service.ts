@@ -25,7 +25,6 @@ export class PlayersService {
   ) {}
 
   async getRoster(userId: string, tagFilter: string) {
-    console.log('attempting to get roster');
     // Validate User
     const player = await this.getPlayerById(userId);
     if (!player) {

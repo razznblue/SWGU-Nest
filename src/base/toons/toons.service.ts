@@ -26,7 +26,7 @@ export class ToonsService {
       );
     }
     const toon = new this.toonModel({
-      ...createToonDto,
+      ...new CreateToonDto(createToonDto),
     });
     await toon.save();
     console.log(`Saved new Toon with uniqueName: ${createToonDto.uniqueName}`);

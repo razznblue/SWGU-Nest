@@ -7,6 +7,7 @@ import {
   Get,
   Delete,
   Param,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PlayerToonsService } from './player-toon.service';
@@ -28,6 +29,20 @@ export class PlayerToonsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('/:playerToonId/upgradeByStar')
+  async upgradeByStar(
+    @Param('playerToonId') playerToonId: string,
+    @Query('remnants') remnants: number,
+    @Request() req: any,
+  ) {
+    return await this.playerToonsService.upgradeByStar(
+      playerToonId,
+      remnants,
+      req.user.userId,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getPlayerToons() {
     return await this.playerToonsService.getPlayerToons();
@@ -36,7 +51,6 @@ export class PlayerToonsController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getPlayerToonById(@Param('id') playerToonId: string) {
-    console.log(playerToonId);
     return await this.playerToonsService.getPlayerToonById(playerToonId);
   }
 

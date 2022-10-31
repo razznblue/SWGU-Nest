@@ -1,7 +1,7 @@
 export interface IToonStats {
   power: number;
   speed: string;
-  offense: string;
+  attack: string;
   defense: string;
   health: string;
   protection: string;
@@ -13,7 +13,7 @@ export interface IToonStats {
 export class ToonStats {
   power: number;
   speed: string;
-  offense: string;
+  attack: string;
   defense: string;
   health: string;
   protection: string;
@@ -24,7 +24,7 @@ export class ToonStats {
   constructor(toonStatData: IToonStats) {
     this.power = toonStatData.power;
     this.speed = toonStatData.speed;
-    this.offense = toonStatData.offense;
+    this.attack = toonStatData.attack;
     this.defense = toonStatData.defense;
     this.health = toonStatData.health;
     this.protection = toonStatData.protection;
@@ -41,8 +41,8 @@ export class ToonStats {
     return this.speed;
   }
 
-  getOffense() {
-    return this.offense;
+  getAttack() {
+    return this.attack;
   }
 
   getDefense() {
