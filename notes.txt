@@ -1,8 +1,5 @@
 # A collection of helpful links
 
-Heroku is gonna stop offerring their free tier nextmonth.... :(
-  - Need to find an alternative to host the server on
-
 Other options to keep Heroku app from sleeping
 http://addons.heroku.com/newrelic
 https://elements.heroku.com/addons/newrelic
@@ -30,3 +27,7 @@ type this in a node console in the terminal
 I ran this once for the access_token and ran it a second time for the refresh_token
 Alternatively, run this in the terminal
   - node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
+
+Updating nested objects mongoose
+ - You need to flag it for editing, super weird... lol
+https://www.google.com/search?q=mongoDB+save+does+not+update+nested+objects+NestJS&oq=mongodb&aqs=chrome.0.69i59l2j69i57j69i65l3j69i60l2.1610j0j7&sourceid=chrome&ie=UTF-8
