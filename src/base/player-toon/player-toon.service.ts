@@ -31,7 +31,6 @@ export class PlayerToonsService {
   async createPlayerToon(uniqueToonName: string, playerId: string) {
     const player = await this.validatePlayer(playerId);
 
-    // Check if player already owns this Toon
     for (const pToonId of player.playerToons) {
       const pToon = await this.getPlayerToonById(pToonId);
       if (!pToon) {
@@ -202,6 +201,7 @@ export class PlayerToonsService {
     );
   }
 
+  // PRIVATE FUNCTIONS
   private async saveNestedObject(model: any, objectProperty: string) {
     model.markModified(objectProperty);
     await model.save();
