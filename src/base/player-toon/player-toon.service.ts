@@ -29,19 +29,26 @@ export class PlayerToonsService {
   ) {}
 
   async createPlayerToon(uniqueToonName: string, playerId: string) {
+    console.log('starting to create new playerToon');
     const player = await this.validatePlayer(playerId);
 
-    for (const pToonId of player.playerToons) {
-      const pToon = await this.getPlayerToonById(pToonId);
-      if (!pToon) {
-        console.error(
-          `${pToonId} may be an invalid PlayerToon id for player ${playerId}`,
-        );
-      }
-      if (pToon.uniqueName && pToon.uniqueName === uniqueToonName) {
-        throw new BadRequestException(`Can't create PToon. Already unlocked.`);
+    if (player.playerToons && player.playerToons.length > 0) {
+      for (const pToonId of player.playerToons) {
+        const pToon = await this.getPlayerToonById(pToonId);
+        if (!pToon) {
+          console.error(
+            `${pToonId} may be an invalid PlayerToon id for player ${playerId}`,
+          );
+        }
+        if (pToon.uniqueName && pToon.uniqueName === uniqueToonName) {
+          throw new BadRequestException(
+            `Can't create PToon. Already unlocked.`,
+          );
+        }
       }
     }
+
+    console.log('validated player');
 
     // Grab data from Toon
     const genericToon = await this.toonModel.findOne({
@@ -52,6 +59,8 @@ export class PlayerToonsService {
         `${uniqueToonName} Not Found. The Generic Toon probably needs to be created first`,
       );
     }
+
+    console.log(genericToon);
 
     // Set the DTO
     const createdAt = Util.getCurrentDate();

@@ -21,6 +21,11 @@ export class ToonsController {
     return response;
   }
 
+  @Get('trigger')
+  async processAllToons() {
+    return await this.toonsService.processAllToons();
+  }
+
   @Get()
   async getAllToons() {
     return { toons: await this.toonsService.getAllToons() };
@@ -48,5 +53,10 @@ export class ToonsController {
     return new BadRequestException(
       'Method DELETE has not yet been implemented for entity Toon',
     );
+  }
+
+  @Delete()
+  async deleteAll() {
+    return await this.toonsService.deleteAllToons();
   }
 }
