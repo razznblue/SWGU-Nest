@@ -40,8 +40,6 @@ export class AuthController {
   async refreshTokens(@Request() req: any) {
     const userId = req.user['sub'];
     const refreshToken = req.user['refreshToken'];
-    console.log('userId: ', userId);
-    console.log('refreshToken: ', refreshToken);
     return await this.authService.refreshTokens(userId, refreshToken);
   }
 }

@@ -51,8 +51,6 @@ export class AuthService {
       throw new BadRequestException('Player already exists');
     }
 
-    console.log('attempting to create player 2: ', createPlayerDto);
-
     const newPlayer = await this.playersService.createPlayer(createPlayerDto);
     const tokens = await this.getTokens(newPlayer._id, newPlayer.username);
     await this.updateRefreshToken(newPlayer._id, tokens.refreshToken);

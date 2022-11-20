@@ -2,7 +2,7 @@ import { Optional } from '@nestjs/common';
 import { ToonMedia } from 'src/objects/toon_media';
 import { ToonStats } from 'src/objects/toon_stats';
 import { Ability } from '../abilities/ability.schema';
-import getStarMapper from '../player-toon/util/star-mapper';
+import { getStarMapper } from '../player-toon/util/star-mapper';
 
 /* Defines The following
     BaseToonDTO

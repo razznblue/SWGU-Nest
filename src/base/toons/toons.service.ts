@@ -47,7 +47,6 @@ export class ToonsService {
       if (!toon) {
         throw new NotFoundException('Toon Not Found');
       }
-      console.log(`Found a toon by uniqueName: ${uniqueName}`);
       return toon;
     } catch (error) {
       this.handleError(error);
