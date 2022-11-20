@@ -26,7 +26,7 @@ async function bootstrap() {
   });
   await app.listen(process.env.PORT || 8080);
 
-  // Prevent app from going to sleep on Heroku
+  // Prevent app from going to sleep
   // setInterval(async () => {
   //   await axios.get('https://swgu-nest.herokuapp.com/');
   //   console.log('App Pinged');

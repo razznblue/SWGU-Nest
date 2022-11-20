@@ -13,7 +13,7 @@ import { CreatePlayerToonDto, UpdatePlayerToonDto } from './util/playerToonDto';
 import { Toon, ToonDocument } from '../toons/toon.schema';
 import { ToonStats } from 'src/objects/toon_stats';
 import { Util } from 'src/util/util';
-import getStarMapper from './util/star-mapper';
+import { getStarMapper } from './util/star-mapper';
 
 @Injectable()
 export class PlayerToonsService {
@@ -107,22 +107,13 @@ export class PlayerToonsService {
     return playerToons;
   }
 
-  async upgradeByStar(playerToonId: string, remnants: number, userId: string) {
+  async upgradeByStar(playerToonId: string, userId: string) {
     const player = await this.validatePlayer(userId);
-    const playerToonToUpgrade = player.playerToons.filter(
-      (toonId) => toonId === playerToonId,
+    const playerToon = await this.getPlayerToonFromPlayerRoster(
+      player,
+      playerToonId,
     );
-    if (playerToonToUpgrade.length === 0) {
-      return new NotFoundException(
-        `Could not upgrade. Toon ${playerToonId} not found in roster`,
-      );
-    } else if (playerToonToUpgrade.length > 1) {
-      return new BadRequestException(
-        `There is a duplicate toon: [${playerToonId}] in roster.`,
-      );
-    }
-    const playerToon = await this.getPlayerToonById(playerToonToUpgrade[0]);
-    return await this.upgradePlayerToonByStar(playerToon, remnants);
+    return await this.upgradePlayerToonByStar(playerToon, playerToon.remnants);
   }
 
   async deletePlayerToon(playerToonId: string, userId: string) {
@@ -165,12 +156,34 @@ export class PlayerToonsService {
     }
   }
 
+  public async updatePlayerToon(
+    playerToonId: any,
+    remnants: number,
+    userId: string,
+  ) {
+    const player = await this.validatePlayer(userId);
+    const playerToon = await this.getPlayerToonFromPlayerRoster(
+      player,
+      playerToonId,
+    );
+    if (playerToon && remnants) {
+      playerToon.remnants = playerToon.remnants + remnants;
+      playerToon.save();
+      return {
+        response: this.successResponse(
+          `New RemnantCount: ${playerToon.remnants}`,
+        ),
+        playerToon: PlayerToon,
+      };
+    }
+  }
+
   private async upgradePlayerToonByStar(playerToon: any, remnants: number) {
-    const stars = playerToon.stars;
-    if (stars === 10) {
+    const currentStars = playerToon.stars;
+    if (currentStars === 10) {
       throw new BadRequestException(`Toon is already at max star level`);
     }
-    const newLevel = stars + 1;
+    const newLevel = currentStars + 1;
     const statsToAdd = getStarMapper().filter(
       (obj) => obj.stars === newLevel,
     )[0];
@@ -199,6 +212,30 @@ export class PlayerToonsService {
     return this.successResponse(
       `Upgraded ${playerToon.name} to ${playerToon.stars} stars`,
     );
+  }
+
+  private async getPlayerToonFromPlayerRoster(
+    player: any,
+    playerToonId: string,
+  ) {
+    const playerToonToUpgrade = player.playerToons.filter(
+      (toonId) => toonId === playerToonId,
+    );
+    if (playerToonToUpgrade.length === 0) {
+      throw new NotFoundException(
+        `Could not upgrade. Toon ${playerToonId} not found in roster`,
+      );
+    } else if (playerToonToUpgrade.length > 1) {
+      throw new BadRequestException(
+        `There is a duplicate toon: [${playerToonId}] in roster.`,
+      );
+    } else if (playerToonToUpgrade.length === 1) {
+      return await this.getPlayerToonById(playerToonToUpgrade[0]);
+    } else {
+      throw new BadRequestException(
+        `Unknown error occured while fetching PlayerToon from player ${player.username}'s roster`,
+      );
+    }
   }
 
   // PRIVATE FUNCTIONS

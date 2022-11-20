@@ -7,7 +7,7 @@ import {
   Get,
   Delete,
   Param,
-  Query,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PlayerToonsService } from './player-toon.service';
@@ -32,10 +32,23 @@ export class PlayerToonsController {
   @Get('/:playerToonId/upgradeByStar')
   async upgradeByStar(
     @Param('playerToonId') playerToonId: string,
-    @Query('remnants') remnants: number,
     @Request() req: any,
   ) {
     return await this.playerToonsService.upgradeByStar(
+      playerToonId,
+      req.user.userId,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async updatePlayerToon(
+    @Param('id') playerToonId: string,
+    @Body('remnants') remnants: number,
+    @Request() req: any,
+  ) {
+    console.log(`Attempting to update playerToon ${playerToonId}`);
+    return await this.playerToonsService.updatePlayerToon(
       playerToonId,
       remnants,
       req.user.userId,

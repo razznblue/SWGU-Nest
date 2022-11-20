@@ -124,7 +124,6 @@ export class PlayersService {
         }
         throw new NotFoundException('Player Not Found');
       }
-      console.log(`Found a player by username: ${username}`);
       return player;
     } catch (error) {
       this.handleError(error);
@@ -185,7 +184,6 @@ export class PlayersService {
     }
     if (password) {
       player.password = await this.hashData(password);
-      //console.log(`Updated user pwd with hash of ${player.password}`);
     }
     player.save();
     return this.successResponse(`Updated player ${id} successfully`);

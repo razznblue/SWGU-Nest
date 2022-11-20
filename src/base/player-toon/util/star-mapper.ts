@@ -156,8 +156,19 @@ const StarMapper = [
   },
 ];
 
-const getStarMapper = () => {
+export const getStarMapper = () => {
   return StarMapper;
 };
 
-export default getStarMapper;
+export const playerShouldLevelUp = (
+  currentPlayerStars: number,
+  currentPlayerRemnants: number,
+) => {
+  const currentStarMapObject = getStarMapper().filter(
+    (obj) => obj.stars === currentPlayerStars + 1,
+  );
+  if (currentStarMapObject && currentStarMapObject.length === 1) {
+    const currentStarMapObjectRemnants = currentStarMapObject[0].remnants;
+    return currentPlayerRemnants >= currentStarMapObjectRemnants ? true : false;
+  }
+};
