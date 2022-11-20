@@ -2,7 +2,8 @@ export class ToonMedia {
   constructor(
     private primaryAssetFront: string,
     private primaryAssetBack: string,
-    private secondaryAsset: string,
+    private heroAsset: string,
+    private remnantAsset: string,
   ) {}
 
   // The FRONT of the Toon Card
@@ -16,7 +17,11 @@ export class ToonMedia {
   }
 
   // The PROFILE image (probably just a picture of the characters face)
-  getSecondaryAsset(): string {
-    return this.secondaryAsset;
+  getHeroAsset(): string {
+    return this.heroAsset;
+  }
+
+  getRemnantAsset(): string {
+    return this.remnantAsset;
   }
 }
